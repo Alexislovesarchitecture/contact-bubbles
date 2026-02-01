@@ -56,6 +56,12 @@ function App() {
   const [graphDepth, setGraphDepth] = useState(1);
   const [graphTypes, setGraphTypes] = useState<string[]>(['friend', 'family', 'coworker', 'custom']);
   const [graphData, setGraphData] = useState<GraphResponse | null>(null);
+  const allTypes = useMemo(() => {
+    const next = new Set(REL_TYPES);
+    relationships.forEach((r) => next.add(r.type));
+    graphTypes.forEach((t) => next.add(t));
+    return Array.from(next);
+  }, [relationships, graphTypes]);
 
   useEffect(() => {
     void loadContacts();
@@ -75,6 +81,22 @@ function App() {
     if (!selectedId) return;
     void loadGraph(selectedId, graphDepth, graphTypes);
   }, [selectedId, graphDepth, graphTypes]);
+
+  useEffect(() => {
+    if (!relationships.length) return;
+    const relTypes = new Set(relationships.map((r) => r.type));
+    setGraphTypes((prev) => {
+      let changed = false;
+      const next = new Set(prev);
+      relTypes.forEach((t) => {
+        if (!next.has(t)) {
+          next.add(t);
+          changed = true;
+        }
+      });
+      return changed ? Array.from(next) : prev;
+    });
+  }, [relationships]);
 
   async function loadContacts() {
     setLoading(true);
@@ -267,10 +289,16 @@ function App() {
             </ul>
           </div>
           <div className="panel__footer">
-            <button onClick={() => {
-              setEditMode(false);
-              setDraft(emptyContactDraft());
-            }}>
+            <button
+              onClick={() => {
+                setEditMode(false);
+                setSelectedId(null);
+                setSelected(null);
+                setRelationships([]);
+                setGraphData(null);
+                setDraft(emptyContactDraft());
+              }}
+            >
               New Contact
             </button>
           </div>
@@ -278,7 +306,7 @@ function App() {
 
         <section className="panel panel--wide">
           <div className="panel__header">
-            <h2>{editMode ? 'Edit Contact' : 'Contact Detail'}</h2>
+            <h2>{selectedId ? (editMode ? 'Edit Contact' : 'Contact Detail') : 'New Contact'}</h2>
             <div className="panel__actions">
               {selectedId && !editMode && (
                 <button onClick={() => setEditMode(true)}>Edit</button>
@@ -509,6 +537,7 @@ function App() {
               setDepth={setGraphDepth}
               types={graphTypes}
               setTypes={setGraphTypes}
+              allTypes={allTypes}
             />
             <GraphView
               data={graphData}
@@ -526,12 +555,14 @@ function GraphControls({
   depth,
   setDepth,
   types,
-  setTypes
+  setTypes,
+  allTypes
 }: {
   depth: number;
   setDepth: (n: number) => void;
   types: string[];
   setTypes: (t: string[]) => void;
+  allTypes: string[];
 }) {
   return (
     <div className="graph-controls">
@@ -546,7 +577,7 @@ function GraphControls({
         </select>
       </div>
       <div className="type-toggles">
-        {REL_TYPES.map((t) => (
+        {allTypes.map((t) => (
           <label key={t} className="checkbox">
             <input
               type="checkbox"

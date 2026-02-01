@@ -7,8 +7,16 @@ import { schemaSql } from './schema.js';
 export type DB = Database.Database;
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const dataDir = path.resolve(projectRoot, 'data');
-const dbPath = path.resolve(dataDir, 'contacts.sqlite');
+const defaultDataDir = path.resolve(projectRoot, 'data');
+const defaultDbPath = path.resolve(defaultDataDir, 'contacts.sqlite');
+
+function resolveDbPath(): string {
+  const envPath = process.env.CONTACTS_DB_PATH?.trim();
+  if (envPath) {
+    return envPath === ':memory:' ? ':memory:' : path.resolve(envPath);
+  }
+  return defaultDbPath;
+}
 
 export function normalizePhone(phone: string): string {
   return phone.replace(/\D+/g, '');
@@ -19,7 +27,10 @@ export function nowIso(): string {
 }
 
 export function openDb(): DB {
-  fs.mkdirSync(dataDir, { recursive: true });
+  const dbPath = resolveDbPath();
+  if (dbPath !== ':memory:') {
+    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+  }
   const db = new Database(dbPath);
   db.pragma('foreign_keys = ON');
   db.exec(schemaSql);
@@ -27,5 +38,5 @@ export function openDb(): DB {
 }
 
 export function getDbPath(): string {
-  return dbPath;
+  return resolveDbPath();
 }

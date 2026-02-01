@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createApp } from './app.ts';
 
+process.env.CONTACTS_DB_PATH = ':memory:';
+
 test('GET /api/health', async () => {
   const { app } = createApp();
   const server = app.listen(0);

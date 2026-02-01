@@ -189,7 +189,17 @@ export function createApiRouter(db: DB): Router {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
     ).run(relId, fromContactId, toContactId, type, directed, strength, note, now, now);
 
-    const row = db.prepare(`SELECT * FROM relationships WHERE id=?`).get(relId);
+    const row = db
+      .prepare(
+        `SELECT r.*,
+                c1.display_name AS from_display_name,
+                c2.display_name AS to_display_name
+         FROM relationships r
+         JOIN contacts c1 ON c1.id = r.from_contact_id
+         JOIN contacts c2 ON c2.id = r.to_contact_id
+         WHERE r.id = ?`
+      )
+      .get(relId);
     ok(res, mapRelRow(row));
   });
 
@@ -212,6 +222,7 @@ export function createApiRouter(db: DB): Router {
 
     const nodes = new Map<string, { id: string; displayName: string }>();
     const edges: Array<{ id: string; from: string; to: string; type: string; directed: 0 | 1; strength: number | null }> = [];
+    const edgeIds = new Set<string>();
 
     const getDisplayName = db.prepare(`SELECT id, display_name FROM contacts WHERE id=?`);
     const relStmt = db.prepare(
@@ -241,14 +252,18 @@ export function createApiRouter(db: DB): Router {
         if (allowedTypes && !allowedTypes.has(String(r0.type))) continue;
         const from = String(r0.from_contact_id);
         const to = String(r0.to_contact_id);
-        edges.push({
-          id: String(r0.id),
-          from,
-          to,
-          type: String(r0.type),
-          directed: Number(r0.directed) as 0 | 1,
-          strength: r0.strength == null ? null : Number(r0.strength)
-        });
+        const edgeId = String(r0.id);
+        if (!edgeIds.has(edgeId)) {
+          edgeIds.add(edgeId);
+          edges.push({
+            id: edgeId,
+            from,
+            to,
+            type: String(r0.type),
+            directed: Number(r0.directed) as 0 | 1,
+            strength: r0.strength == null ? null : Number(r0.strength)
+          });
+        }
 
         for (const otherId of [from, to]) {
           if (!nodes.has(otherId)) {
