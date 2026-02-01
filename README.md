@@ -12,6 +12,10 @@ From repo root:
 npm install
 ```
 
+### Installer scripts
+- macOS/Linux: `./scripts/install.sh`
+- Windows (PowerShell): `./scripts/install.ps1`
+
 ## Run (dev)
 ```
 npm run dev
