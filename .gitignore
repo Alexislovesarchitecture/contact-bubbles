@@ -1,0 +1,9 @@
+node_modules/
+**/node_modules/
+**/dist/
+**/.vite/
+server/data/
+server/data/*.sqlite
+server/data/*.sqlite-*
+.npm-cache/
+.DS_Store
