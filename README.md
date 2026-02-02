@@ -12,6 +12,12 @@ From repo root:
 npm install
 ```
 
+## Installer (optional)
+If you prefer a guided setup from repo root:
+```
+./scripts/install.sh
+```
+
 ## Run (dev)
 ```
 npm run dev
