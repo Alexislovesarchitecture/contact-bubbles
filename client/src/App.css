@@ -80,10 +80,6 @@
   min-height: 420px;
 }
 
-.panel--full {
-  width: 100%;
-}
-
 .panel__header {
   display: flex;
   align-items: center;
@@ -222,126 +218,6 @@ label {
   font-style: italic;
 }
 
-.grid-two {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 16px;
-}
-
-.link-form {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.link-form input:last-of-type {
-  grid-column: 1 / -1;
-}
-
-.relationship-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.relationship-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #fbfaf8;
-  border: 1px solid var(--border);
-}
-
-.relationship-list .meta {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.relationship-list .note {
-  margin-top: 6px;
-  color: var(--ink);
-}
-
-.graph-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.type-toggles {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.graph-shell {
-  background: #f9f8f5;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  height: 420px;
-}
-
-.graph-shell svg {
-  width: 100%;
-  height: 100%;
-}
-
-.node circle {
-  fill: #fff;
-  stroke: var(--accent);
-  stroke-width: 2;
-}
-
-.node.active circle {
-  fill: var(--accent);
-  stroke: #0a4c46;
-}
-
-.node text {
-  font-size: 11px;
-  pointer-events: none;
-}
-
-.node.active text {
-  fill: #fff;
-}
-
-.edge {
-  stroke: #c6c0b7;
-  stroke-width: 2;
-  opacity: 0.8;
-}
-
-.edge.directed {
-  stroke-dasharray: 4 4;
-}
-
-.graph-empty {
-  padding: 24px;
-  color: var(--muted);
-  font-style: italic;
-  border: 1px dashed var(--border);
-  border-radius: 16px;
-}
-
 .muted {
   color: var(--muted);
 }
@@ -351,8 +227,7 @@ label {
     grid-template-columns: 1fr;
   }
 
-  .detail-grid,
-  .grid-two {
+  .detail-grid {
     grid-template-columns: 1fr;
   }
 

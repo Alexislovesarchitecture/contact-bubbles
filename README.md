@@ -12,9 +12,17 @@ From repo root:
 npm install
 ```
 
+<<<<<<< ours
 ### Installer scripts
 - macOS/Linux: `./scripts/install.sh`
 - Windows (PowerShell): `./scripts/install.ps1`
+=======
+## Installer (optional)
+If you prefer a guided setup from repo root:
+```
+./scripts/install.sh
+```
+>>>>>>> theirs
 
 ## Run (dev)
 ```
