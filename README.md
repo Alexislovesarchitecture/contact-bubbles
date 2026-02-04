@@ -1,6 +1,6 @@
 # Contact Bubbles
 
-Local-first contacts + relationship linking + bubble/graph view.
+Simple local contact manager for names, notes, phones, and emails.
 
 ## Prereqs
 - Node.js 20+ recommended
@@ -12,22 +12,17 @@ From repo root:
 npm install
 ```
 
-<<<<<<< ours
-### Installer scripts
-- macOS/Linux: `./scripts/install.sh`
-- Windows (PowerShell): `./scripts/install.ps1`
-=======
 ## Installer (optional)
 If you prefer a guided setup from repo root:
-```
-./scripts/install.sh
-```
->>>>>>> theirs
+- macOS/Linux: `./scripts/install.sh`
+- Windows (PowerShell): `./scripts/install.ps1`
 
 ## Run (dev)
+From repo root:
 ```
 npm run dev
 ```
+Then open `http://localhost:5173`.
 
 ## Test
 ```
@@ -35,24 +30,18 @@ npm run test
 ```
 
 ## Database
-SQLite file location:
+Default SQLite file:
 - `server/data/contacts.sqlite`
 
+Override with an absolute or relative path:
+```
+CONTACTS_DB_PATH=./my-contacts.sqlite npm --workspace server run dev
+```
+
 ## Features (MVP)
-1) Contacts CRUD
+1. Contacts CRUD
 - Create contact (display name required; optional: phone, email, note)
-- List contacts (sorted A–Z), search by name/email/phone
+- List contacts (search by name/email/phone)
 - View contact details
 - Edit + delete contact
 - Data persists across restarts
-
-2) Linking / relationships between contacts (zettelkasten-ish)
-- On a contact detail page: section “Links” listing related contacts
-- Add link: choose another contact, choose relationship type (friend/family/coworker/custom), optional note (“why linked”), optional strength (1–5), optional directed/undirected
-- Remove link
-
-3) “Contact bubble” relationship view (local graph)
-- A bubble/graph view that shows the selected contact as the center node and linked contacts around it
-- Depth control: 1–3 (depth=1 shows direct neighbors)
-- Filters: toggle relationship types
-- Interactions: pan/zoom, drag nodes, click node to navigate
