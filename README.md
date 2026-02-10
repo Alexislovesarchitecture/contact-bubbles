@@ -12,6 +12,11 @@ From repo root:
 npm install
 ```
 
+Or run the setup script alias:
+```
+npm run setup
+```
+
 ## Installer (optional)
 If you prefer a guided setup from repo root:
 - macOS/Linux: `./scripts/install.sh`
