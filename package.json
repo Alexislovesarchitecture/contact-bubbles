@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": ["client", "server"],
   "scripts": {
+    "setup": "npm install",
     "dev": "concurrently -n server,client -c blue,green \"npm --workspace server run dev\" \"npm --workspace client run dev\"",
     "lint": "npm --workspace server run lint && npm --workspace client run lint",
     "test": "npm --workspace server run test"
